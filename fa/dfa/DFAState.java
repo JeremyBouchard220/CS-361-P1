@@ -1,4 +1,8 @@
-public class DFAState 
+package fa.dfa;
+
+import fa.State;
+
+public class DFAState extends State
 {
     
 }
