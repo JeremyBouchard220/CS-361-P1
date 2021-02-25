@@ -1,9 +1,21 @@
 package fa.dfa;
 
-import java.util.Set;
+import java.util.*;
+import fa.State;
 
 public class DFA implements DFAInterface 
 {
+
+    private HashSet<Character> alphabet;
+    private LinkedHashSet<String> originalTransitions;
+    private LinkedHashSet<DFAState> Q;
+
+    public DFA()
+    {
+        alphabet = new HashSet<Character>();
+        originalTransitions = new LinkedHashSet<String>();
+        Q = new LinkedHashSet<DFAState>();
+    }
 
     /**
 	 * Simulates a DFA on input s to determine
@@ -13,7 +25,10 @@ public class DFA implements DFAInterface
 	 */
     public boolean accepts(String s) 
     {
-        // TODO Auto-generated method stub
+        State startState = getStartState();
+        DFAState currentState = new DFAState("");
+
+
         return false;
     }
 
@@ -23,7 +38,25 @@ public class DFA implements DFAInterface
 	 */
     public void addStartState(String name) 
     {
-        // TODO Auto-generated method stub
+        DFAState state = new DFAState(name);
+        state.setStartState(true);
+        
+        /**
+         * If no start state, adds start state. If there is start state,
+         * but it's not labeled correctly, then set state to start state.
+         */
+        if(!(Q.add(state)))
+        {
+            Iterator<DFAState> it = Q.iterator();
+            while(it.hasNext())
+            {
+                state = it.next();
+                if(state.getName().equals(name))
+                {
+                    state.setStartState(true);
+                }
+            }
+        }
 
     }
 
@@ -33,8 +66,8 @@ public class DFA implements DFAInterface
 	 */
     public void addState(String name) 
     {
-        // TODO Auto-generated method stub
-
+        DFAState state = new DFAState(name);
+        Q.add(state);
     }
 
     /**
@@ -43,8 +76,9 @@ public class DFA implements DFAInterface
 	 */
     public void addFinalState(String name) 
     {
-        // TODO Auto-generated method stub
-
+        DFAState state = new DFAState(name);
+        state.setEndState(true);
+        Q.add(state);
     }
 
     /**
@@ -55,8 +89,19 @@ public class DFA implements DFAInterface
 	 */
     public void addTransition(String fromState, char onSymb, String toState) 
     {
-        // TODO Auto-generated method stub
+        alphabet.add(onSymb);
+        originalTransitions.add(fromState + onSymb + toState);
 
+        Iterator<DFAState> it = Q.iterator();
+        while(it.hasNext())
+        {
+            DFAState previousState = it.next();
+            if(previousState.getName().equals(fromState))
+            {
+                previousState.addStateTransition(toState, onSymb);
+                break;
+            }
+        }
     }
 
     /**
@@ -95,8 +140,7 @@ public class DFA implements DFAInterface
 	 */
     public Set<Character> getABC() 
     {
-        // TODO Auto-generated method stub
-        return null;
+        return alphabet;
     }
 
     /**

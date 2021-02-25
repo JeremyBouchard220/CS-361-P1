@@ -10,14 +10,14 @@ import fa.State;
 public class DFAState extends State 
 {
     private boolean isEndState, isStartState;
-    // Might need to turn State into Character
-    private HashMap<State, String> transitionStates;
+    // Might have remaining States that need to be Character
+    private HashMap<Character, String> transitionStates;
 
     // DFA State Constructor
     public DFAState(String name) 
     {
         this.name = name;
-        transitionStates = new HashMap<State, String>();
+        transitionStates = new HashMap<Character, String>();
         isEndState = false;
         isStartState = false;
     }
@@ -42,21 +42,21 @@ public class DFAState extends State
         return isEndState;
     }
 
-    public void addStateTransition(String toState, State stateSymbol) 
+    public void addStateTransition(String toState, Character stateSymbol) 
     {
         // may need to getValue of the stateSymbol
         transitionStates.put(stateSymbol, toState);
     }
 
-    public boolean checkValidTransition(State transition) 
+    public boolean checkValidTransition(Character transition) 
     {
-        return transitionStates.containsKey((State) transition);
+        return transitionStates.containsKey((Character) transition);
     }
 
     public LinkedList<Map.Entry<State, String>> getStateTransitions() 
     {
-        LinkedList returnVal = new LinkedList<Map.Entry<State, String>>();
-        for (Entry<State, String> entry : transitionStates.entrySet())
+        LinkedList returnVal = new LinkedList<Map.Entry<Character, String>>();
+        for (Entry<Character, String> entry : transitionStates.entrySet())
         {
             returnVal.add(entry);
         }
