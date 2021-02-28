@@ -110,18 +110,32 @@ public class DFA implements DFAInterface
 	 */
     public Set<? extends fa.State> getStates() 
     {
-        // TODO Auto-generated method stub
-        return null;
+        LinkedHashSet<DFAState> returnStates = new LinkedHashSet<DFAState>();
+
+        Iterator<DFAState> iter = Q.iterator();
+        while(iter.hasNext()){
+            DFAState state = iter.next();
+            returnStates.add(state);
+        }
+        return returnStates;
     }
 
     /**
-	 * Getter for F
+	 * Getter for Final States
 	 * @return a set of final states that FA has
 	 */
     public Set<? extends fa.State> getFinalStates() 
     {
-        // TODO Auto-generated method stub
-        return null;
+        LinkedHashSet<DFAState> returnStates = new LinkedHashSet<DFAState>();
+
+        Iterator<DFAState> iter = Q.iterator();
+        while(iter.hasNext()){
+            DFAState maybeFinal = iter.next();
+            if(maybeFinal.getEndState()){ //If the state we're checking is an end state, add to list
+                returnStates.add(maybeFinal);
+            }
+        }
+        return returnStates;
     }
 
     /**
@@ -130,8 +144,16 @@ public class DFA implements DFAInterface
 	 */
     public fa.State getStartState() 
     {
-        // TODO Auto-generated method stub
-        return null;
+        DFAState maybeStart = null;
+
+        Iterator<DFAState> iter = Q.iterator();
+        while(iter.hasNext()){
+            maybeStart = iter.next();
+            if(maybeStart.getStartState()){
+                return maybeStart; //There should only be one
+            }
+        }
+        return maybeStart;
     }
 
     /**
@@ -151,8 +173,19 @@ public class DFA implements DFAInterface
 	 */
     public fa.State getToState(DFAState from, char onSymb) 
     {
-        // TODO Auto-generated method stub
-        return null;
+        LinkedList<Map.Entry<Character,String>> trans = from.getTransitionStates();
+
+        for(Map.Entry<Character,String> i: trans){
+            if(i.getKey().equals((Character)onSymb)){
+                Iterator<DFAState> iter = Q.iterator();
+                while(iter.hasNext()){
+                    DFAState curr = iter.next();
+                    if(curr.getName().equals(i.getValue()))
+                        return curr; //If found return it
+                }
+            }
+        }
+        return null; //if not found, dne
     }
         
 }
