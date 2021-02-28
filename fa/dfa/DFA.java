@@ -28,6 +28,34 @@ public class DFA implements DFAInterface
         State startState = getStartState();
         DFAState currentState = new DFAState("");
 
+        Iterator<DFAState> it = Q.iterator();
+        while(it.hasNext())
+        {
+            currentState = it.next();
+            if(currentState.getName().equals(startState.getName()))
+            {
+                break;
+            }
+        }
+
+        for(int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+            if(Character.valueOf(c).equals('e') && currentState.getEndState())
+            {
+                return true;
+            }
+            currentState = (DFAState)getToState(currentState, c);
+            if(currentState == null)
+            {
+                return false;
+            }
+        }
+
+        if(currentState.getEndState())
+        {
+            return true;
+        }
 
         return false;
     }
@@ -187,5 +215,16 @@ public class DFA implements DFAInterface
         }
         return null; //if not found, dne
     }
+    public String toString()
+    {
+        
+        return null;
+    }
+
+    /**
+     * add complement method
+     * add toString method
+     * add createCompClone method
+     */
         
 }
