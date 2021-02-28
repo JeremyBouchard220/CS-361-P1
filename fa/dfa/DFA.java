@@ -85,7 +85,6 @@ public class DFA implements DFAInterface
                 }
             }
         }
-
     }
 
     /**
@@ -215,21 +214,73 @@ public class DFA implements DFAInterface
         }
         return null; //if not found, dne
     }
+
     public String toString()
     {
         //Print everything in the  five tuple
         //Q
         StringBuilder capitalQ = new StringBuilder();
         capitalQ.append("Q = { ");
-        capitalQ.append(Q.toString);
-        captialQ.append(" }\n");
-        return captialQ.toString();
+        Iterator<DFAState> iter = Q.iterator();
+        ArrayList<State> stateList = new ArrayList<State>();
+        while(iter.hasNext()){
+            DFAState curr = iter.next();
+            capitalQ.append(" " + curr.toString() + " ");
+            stateList.add(curr);
+        }
+        capitalQ.append(" }\n");
+
+        //Sigma
+        StringBuilder sigma = new StringBuilder();
+        sigma.append("Sigma = {");
+        Iterator<Character> iterChar = alphabet.iterator();
+        ArrayList<Character> charList = new ArrayList<Character>();
+        while(iterChar.hasNext()){
+            Character character = iterChar.next();
+            sigma.append(" " + character.toString() + " ");
+            charList.add(character);
+        }
+        sigma.append("}\n");
+
+
+
+
+        //q0 - start state
+        StringBuilder startState = new StringBuilder();
+        startState.append("q0 = " + getStartState().toString() + "\n");
+
+        //f - final state
+        StringBuilder finalState = new StringBuilder();
+        finalState.append("F = {");
+        Set<? extends fa.State> finals = getFinalStates(); 
+        for(State f : finals) {
+            finalState.append(" " + f.toString() + " ");
+        }
+        finalState.append("}\n");
+
+        StringBuilder deltaString = new StringBuilder();
+        String[][] delta = new String[getStates().size() + 1][getABC().size() + 1];
+        delta[0][0] = " ";
+        for(int i = 1; i < getStates().size() + 1; i++){
+            delta[i][0] = stateList.get(i - 1).toString();
+        }
+        for(int i = 1; i < getABC().size() + 1; i++){
+            delta[0][i] = charList.get(i - 1).toString();
+        }
+        for(int i = 0; i < getStates().size() + 1; i++){
+            for(int j = 1; j < getABC().size() + 1; j++){
+                if(delta[i][j] == null){
+                    delta[i][j] = " ";
+                }
+                deltaString.append(delta[i][j].toString());
+            }
+            deltaString.append("\n");
+        }
+   
+     //   finalState.append(deltaString.toString());
+        startState.append(finalState.toString());
+        sigma.append(startState.toString());
+        capitalQ.append(sigma.toString());
+        return capitalQ.toString();
     }
-
-    /**
-     * add complement method
-     * add toString method
-     * add createCompClone method
-     */
-
 }
