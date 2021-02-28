@@ -53,7 +53,7 @@ public class DFAState extends State
         return transitionStates.containsKey((Character) transition);
     }
 
-    public LinkedList<Map.Entry<State, String>> getStateTransitions() 
+    public LinkedList<Map.Entry<Character, String>> getStateTransitions() 
     {
         LinkedList returnVal = new LinkedList<Map.Entry<Character, String>>();
         for (Entry<Character, String> entry : transitionStates.entrySet())

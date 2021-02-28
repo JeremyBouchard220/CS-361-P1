@@ -173,7 +173,7 @@ public class DFA implements DFAInterface
 	 */
     public fa.State getToState(DFAState from, char onSymb) 
     {
-        LinkedList<Map.Entry<Character,String>> trans = from.getTransitionStates();
+        LinkedList<Map.Entry<Character,String>> trans = from.getStateTransitions();
 
         for(Map.Entry<Character,String> i: trans){
             if(i.getKey().equals((Character)onSymb)){
