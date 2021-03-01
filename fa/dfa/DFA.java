@@ -222,7 +222,7 @@ public class DFA implements DFAInterface
         StringBuilder capitalQ = new StringBuilder();
         capitalQ.append("Q = { ");
         Iterator<DFAState> iter = Q.iterator();
-        ArrayList<State> stateList = new ArrayList<State>();
+        ArrayList<DFAState> stateList = new ArrayList<DFAState>();
         while(iter.hasNext()){
             DFAState curr = iter.next();
             capitalQ.append(" " + curr.toString() + " ");
@@ -243,8 +243,6 @@ public class DFA implements DFAInterface
         sigma.append("}\n");
 
 
-
-
         //q0 - start state
         StringBuilder startState = new StringBuilder();
         startState.append("q0 = " + getStartState().toString() + "\n");
@@ -258,28 +256,35 @@ public class DFA implements DFAInterface
         }
         finalState.append("}\n");
 
+        //delta
         StringBuilder deltaString = new StringBuilder();
+        deltaString.append("delta = \n");
         String[][] delta = new String[getStates().size() + 1][getABC().size() + 1];
-        delta[0][0] = " ";
+        delta[0][0] = "         ";
+
         for(int i = 1; i < getStates().size() + 1; i++){
-            delta[i][0] = stateList.get(i - 1).toString();
+            delta[i][0] = "     " + stateList.get(i - 1).toString() + "   ";
         }
+
         for(int i = 1; i < getABC().size() + 1; i++){
-            delta[0][i] = charList.get(i - 1).toString();
+            delta[0][i] = charList.get(i - 1).toString() + "  ";
         }
+
         for(int i = 0; i < getStates().size() + 1; i++){
-            for(int j = 1; j < getABC().size() + 1; j++){
+            for(int j = 0; j < getABC().size() + 1; j++){
                 if(delta[i][j] == null){
-                    delta[i][j] = " ";
+                    LinkedList<Map.Entry<Character, String>> stateTrans = stateList.get(i - 1).getStateTransitions();
+                    delta[i][j] = stateTrans.get(j - 1).toString().substring(2) + "  ";
                 }
-                deltaString.append(delta[i][j].toString());
+                deltaString.append(delta[i][j].toString() + "    ");
             }
             deltaString.append("\n");
         }
    
-     //   finalState.append(deltaString.toString());
+        //put it all together
         startState.append(finalState.toString());
-        sigma.append(startState.toString());
+        deltaString.append(startState.toString());
+        sigma.append(deltaString.toString());
         capitalQ.append(sigma.toString());
         return capitalQ.toString();
     }
