@@ -1,3 +1,8 @@
+/**
+ * The following code contains the methods used to create and navigate
+ * a Difinite Finite Automata.
+ * @authors: Jeremy Bouchard and Sam Jackson
+ */
 package fa.dfa;
 
 import java.util.*;
@@ -10,6 +15,9 @@ public class DFA implements DFAInterface
     private LinkedHashSet<String> originalTransitions;
     private LinkedHashSet<DFAState> Q;
 
+    /**
+     * Constructor that creates the base DFA.
+     */
     public DFA()
     {
         alphabet = new HashSet<Character>();
@@ -215,10 +223,15 @@ public class DFA implements DFAInterface
         return null; //if not found, dne
     }
 
+    /**
+     * This method takes the information found from a DFA
+     * and prints it as readable information.
+     * @return Readable information in the form of a String
+    */
     public String toString()
     {
-        //Print everything in the  five tuple
-        //Q
+        //Print everything in the five tuple
+        //This section handle's Q
         StringBuilder capitalQ = new StringBuilder();
         capitalQ.append("Q = { ");
         Iterator<DFAState> iter = Q.iterator();
@@ -230,7 +243,7 @@ public class DFA implements DFAInterface
         }
         capitalQ.append(" }\n");
 
-        //Sigma
+        //This section handles Sigma
         StringBuilder sigma = new StringBuilder();
         sigma.append("Sigma = {");
         Iterator<Character> iterChar = alphabet.iterator();
@@ -243,11 +256,11 @@ public class DFA implements DFAInterface
         sigma.append("}\n");
 
 
-        //q0 - start state
+        //This section handles q0 - start state
         StringBuilder startState = new StringBuilder();
         startState.append("q0 = " + getStartState().toString() + "\n");
 
-        //f - final state
+        //This section handles F - final state
         StringBuilder finalState = new StringBuilder();
         finalState.append("F = {");
         Set<? extends fa.State> finals = getFinalStates(); 
@@ -256,7 +269,7 @@ public class DFA implements DFAInterface
         }
         finalState.append("}\n");
 
-        //delta
+        //This section handles Delta
         StringBuilder deltaString = new StringBuilder();
         deltaString.append("delta = \n");
         String[][] delta = new String[getStates().size() + 1][getABC().size() + 1];
@@ -281,7 +294,7 @@ public class DFA implements DFAInterface
             deltaString.append("\n");
         }
    
-        //put it all together
+        //This section combines the grabbed information into a single readable string.
         startState.append(finalState.toString());
         deltaString.append(startState.toString());
         sigma.append(deltaString.toString());
